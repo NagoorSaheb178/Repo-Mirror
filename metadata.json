@@ -1,0 +1,5 @@
+{
+  "name": "Repository Mirror",
+  "description": "An intelligent AI system that evaluates GitHub repositories, providing a comprehensive score, summary, and personalized developer roadmap.",
+  "requestFramePermissions": []
+}
