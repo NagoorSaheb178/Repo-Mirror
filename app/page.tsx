@@ -49,7 +49,7 @@ const TerminalLoader = () => {
             </div>
           ))}
           <div className="flex items-center gap-2 text-green-400">
-            <span>></span>
+            <span>&gt;</span>
             <span className="w-2 h-4 bg-green-400 animate-pulse"></span>
           </div>
         </div>

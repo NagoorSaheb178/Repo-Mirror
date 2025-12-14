@@ -30,20 +30,11 @@ The JSON must strictly match this structure:
 `;
 
 export const analyzeRepository = async (repoUrl: string): Promise<RepoAnalysis> => {
-  // Robust API Key check for various environments (Next.js, Vite, Node)
-  let apiKey = '';
-  
-  if (typeof process !== 'undefined' && process.env) {
-    apiKey = process.env.NEXT_PUBLIC_API_KEY || process.env.API_KEY || '';
-  }
-  
-  // Fallback for Vite if process is not polyfilled
-  if (!apiKey && typeof import.meta !== 'undefined' && import.meta.env) {
-    apiKey = import.meta.env.VITE_API_KEY || '';
-  }
+  // Directly access the environment variable compatible with Next.js client-side bundles
+  const apiKey = process.env.NEXT_PUBLIC_API_KEY || process.env.API_KEY;
 
   if (!apiKey) {
-    throw new Error("API Key is missing. Please set NEXT_PUBLIC_API_KEY in Vercel or .env");
+    throw new Error("System Error: API Configuration Missing.");
   }
 
   const ai = new GoogleGenAI({ apiKey });
