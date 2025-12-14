@@ -30,9 +30,20 @@ The JSON must strictly match this structure:
 `;
 
 export const analyzeRepository = async (repoUrl: string): Promise<RepoAnalysis> => {
-  const apiKey = process.env.API_KEY;
+  // Robust API Key check for various environments (Next.js, Vite, Node)
+  let apiKey = '';
+  
+  if (typeof process !== 'undefined' && process.env) {
+    apiKey = process.env.NEXT_PUBLIC_API_KEY || process.env.API_KEY || '';
+  }
+  
+  // Fallback for Vite if process is not polyfilled
+  if (!apiKey && typeof import.meta !== 'undefined' && import.meta.env) {
+    apiKey = import.meta.env.VITE_API_KEY || '';
+  }
+
   if (!apiKey) {
-    throw new Error("API Key is missing.");
+    throw new Error("API Key is missing. Please set NEXT_PUBLIC_API_KEY in Vercel or .env");
   }
 
   const ai = new GoogleGenAI({ apiKey });
@@ -60,8 +71,6 @@ export const analyzeRepository = async (repoUrl: string): Promise<RepoAnalysis> 
       config: {
         systemInstruction: SYSTEM_INSTRUCTION,
         tools: [{ googleSearch: {} }],
-        // responseMimeType and responseSchema are NOT supported with tools in gemini-2.5-flash currently for this specific combination or library version logic.
-        // We rely on the prompt to enforce JSON.
       },
     });
 

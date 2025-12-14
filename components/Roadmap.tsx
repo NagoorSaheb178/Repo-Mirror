@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { RoadmapStep } from '../types';
 import { ArrowRight, Check, AlertCircle, Circle } from 'lucide-react';
